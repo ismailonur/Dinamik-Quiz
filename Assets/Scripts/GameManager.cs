@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
     public Text soruText;
 
     public Text dogruCevapText, yanlisCevapText;
+
+    public GameObject dogruButon, yanlisButon;
 
     void Start()
     {
@@ -65,6 +68,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Yanlış");
         }
 
+        yanlisButon.GetComponent<RectTransform>().DOLocalMoveX(1000f, .5f);
         StartCoroutine(SorularArasiBekle());
     }
     
@@ -79,6 +83,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Yanlış");
         }
 
+        dogruButon.GetComponent<RectTransform>().DOLocalMoveX(-1000f, .5f);
         StartCoroutine(SorularArasiBekle());
     }
 }

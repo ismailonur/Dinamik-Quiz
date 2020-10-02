@@ -19,6 +19,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject dogruButon, yanlisButon;
 
+    int dogruAdet, yanlisAdet;
+
+    int toplamPuan;
+
+    public GameObject sonucPaneli;
+
+    SonucManager sonucManager;
+
     void Start()
     {
         if(cevaplanmamisSorular == null || cevaplanmamisSorular.Count == 0)
@@ -26,11 +34,18 @@ public class GameManager : MonoBehaviour
             cevaplanmamisSorular = sorular.ToList<Soru>();
         }
 
+        dogruAdet = 0;
+        yanlisAdet = 0;
+        toplamPuan = 0;
+
         RastgeleSoruSec();
     }
 
     void RastgeleSoruSec()
     {
+        yanlisButon.GetComponent<RectTransform>().DOLocalMoveX(320f, .2f);
+        dogruButon.GetComponent<RectTransform>().DOLocalMoveX(-320f, .2f);
+
         int randomSoruIndex = Random.Range(0, cevaplanmamisSorular.Count);
         gecerliSoru = cevaplanmamisSorular[randomSoruIndex];
 
@@ -54,18 +69,29 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if(cevaplanmamisSorular.Count <= 0)
+        {
+            sonucPaneli.SetActive(true);
+
+            sonucManager = Object.FindObjectOfType<SonucManager>();
+            sonucManager.SonuclariYazdir(dogruAdet, yanlisAdet, toplamPuan);
+        }
+        else
+        {
+            RastgeleSoruSec();
+        }
     }
 
     public void DogruButonaBasildi()
     {
         if (gecerliSoru.dogrumu)
         {
-            Debug.Log("Doğru");
+            dogruAdet++;
+            toplamPuan += 100;
         }
         else
         {
-            Debug.Log("Yanlış");
+            yanlisAdet++;
         }
 
         yanlisButon.GetComponent<RectTransform>().DOLocalMoveX(1000f, .5f);
@@ -76,11 +102,12 @@ public class GameManager : MonoBehaviour
     {
         if (!gecerliSoru.dogrumu)
         {
-            Debug.Log("Doğru");
+            dogruAdet++;
+            toplamPuan += 100;
         }
         else
         {
-            Debug.Log("Yanlış");
+            yanlisAdet++;
         }
 
         dogruButon.GetComponent<RectTransform>().DOLocalMoveX(-1000f, .5f);

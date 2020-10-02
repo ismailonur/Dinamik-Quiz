@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
 
     void RastgeleSoruSec()
     {
-        yanlisButon.GetComponent<RectTransform>().DOLocalMoveX(320f, .2f);
-        dogruButon.GetComponent<RectTransform>().DOLocalMoveX(-320f, .2f);
+        yanlisButon.GetComponent<RectTransform>().DOLocalMoveX(315f, .2f);
+        dogruButon.GetComponent<RectTransform>().DOLocalMoveX(-315f, .2f);
 
         int randomSoruIndex = Random.Range(0, cevaplanmamisSorular.Count);
         gecerliSoru = cevaplanmamisSorular[randomSoruIndex];
@@ -112,5 +112,10 @@ public class GameManager : MonoBehaviour
 
         dogruButon.GetComponent<RectTransform>().DOLocalMoveX(-1000f, .5f);
         StartCoroutine(SorularArasiBekle());
+    }
+
+    public void YenidenBasla()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
